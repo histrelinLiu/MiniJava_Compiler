@@ -1,3 +1,3 @@
 grammar VarDeclaration;
 
-VarDeclaration: Type Identifier SEMI
+VarDeclaration: Type Identifier SEMI;
