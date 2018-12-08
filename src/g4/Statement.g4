@@ -5,4 +5,4 @@ Statement	:	LBRACE ( Statement )* RBRACE
             |	WHILE LPAREN Expression RPAREN Statement
             |	SOP LPAREN Expression RPAREN SEMI
             |	Identifier ASSIGN Expression SEMI
-            |	Identifier LBRACK Expression RBRACK ASSIGN Expression SEMI
+            |	Identifier LBRACK Expression RBRACK ASSIGN Expression SEMI;
