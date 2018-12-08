@@ -1,4 +1,4 @@
-grammer Reserved;
+lexer grammer Reserved;
 
 // 字符
 LPAREN: '(';
@@ -40,6 +40,7 @@ TRUE        : "true"
 FALSE       : "false"
 THIS        : "this"
 NEW         : "new"
+LENGTH      : "length"
 
 
 
