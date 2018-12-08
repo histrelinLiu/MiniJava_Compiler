@@ -1,3 +1,7 @@
 lexer grammar Identifier;
 
-identifier : [a-zA-Z_] ([a-zA-Z_] | [0-9])*;
+fragment ALPHABET: [A-Za-z_];
+fragment DIGIT: [0-9]; 
+NUMBER: DIGIT+('.'DIGIT+)? ;
+
+identifier: ALPHABET+(DIGIT(ALPHABET)*)*;
