@@ -1,3 +1,3 @@
 grammar Goal;
 
-goal: mainClass LPAREN classDeclaration RPAREN*;
+goal: mainClass (classDeclaration)*;
