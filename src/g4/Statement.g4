@@ -1,8 +1,8 @@
 grammer Statement;
 
-Statement	:	LBRACE ( Statement )* RBRACE
-            |	IF LPAREN Expression RPAREN Statement ELSE Statement
-            |	WHILE LPAREN Expression RPAREN Statement
-            |	SOP LPAREN Expression RPAREN SEMI
-            |	Identifier ASSIGN Expression SEMI
-            |	Identifier LBRACK Expression RBRACK ASSIGN Expression SEMI;
+statement	:	LBRACE ( statement )* RBRACE
+            |	IF LPAREN expression RPAREN statement ELSE statement
+            |	WHILE LPAREN expression RPAREN statement
+            |	SOP LPAREN expression RPAREN SEMI
+            |	identifier ASSIGN expression SEMI
+            |	identifier LBRACK expression RBRACK ASSIGN expression SEMI;

@@ -1,16 +1,16 @@
 grammer Expression;
 
-Expression	:	Expression ( AND | LT | ADD | SUB | MUL ) Expression
-            |	Expression LBRACK Expression RBRACK
-            |	Expression DOT LENGTH
-            |	Expression DOT Identifier LPAREN ( Expression ( COMMA Expression )* )? RPAREN
+expression	:	expression ( AND | LT | ADD | SUB | MUL ) expression
+            |	expression LBRACK expression RBRACK
+            |	expression DOT LENGTH
+            |	expression DOT identifier LPAREN ( expression ( COMMA expression )* )? RPAREN
             |	Integer
             |	TRUE
             |	FALSE
-            |	Identifier
+            |	identifier
             |	THIS
-            |	NEW INT LBRACK Expression RBRACK
-            |	NEW Identifier LPAREN RPAREN
-            |	BANG Expression
-            |	LPAREN Expression RPAREN;
+            |	NEW INT LBRACK expression RBRACK
+            |	NEW identifier LPAREN RPAREN
+            |	BANG expression
+            |	LPAREN expression RPAREN;
             

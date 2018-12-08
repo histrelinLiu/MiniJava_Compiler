@@ -1,3 +1,3 @@
 grammar MethodDeclaration;
 
-MethodDeclaration: PUBLIC Type Identifier LPAREN LPAREN Type Identifier LPAREN COMMA Type Identifier RPAREN* RPAREN? RPAREN LBRACE LPAREN VarDeclaration RPAREN* LPAREN Statement RPAREN* RETURN Expression SEMI RBRACE;
+methodDeclaration: PUBLIC type identifier LPAREN LPAREN type identifier LPAREN COMMA type identifier RPAREN* RPAREN? RPAREN LBRACE LPAREN varDeclaration RPAREN* LPAREN statement RPAREN* RETURN expression SEMI RBRACE;

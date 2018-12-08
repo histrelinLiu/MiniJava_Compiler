@@ -1,7 +1,7 @@
 grammar Type;
 
-Type:   INT LBRACK RBRACK
+type:   INT LBRACK RBRACK
     |	BOOLEAN
     |	INT
-    |	Identifier;
+    |	identifier;
     

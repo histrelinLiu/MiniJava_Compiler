@@ -1,3 +1,3 @@
 grammar ClassDeclaration;
 
-ClassDeclaration: CLASS Identifier LPAREN EXTENDS Identifier RPAREN? LBRACE LPAREN VarDeclaration RPAREN* LPAREN MethodDeclaration RPAREN* RBRACE;
+classDeclaration: CLASS identifier LPAREN EXTENDS identifier RPAREN? LBRACE LPAREN varDeclaration RPAREN* LPAREN methodDeclaration RPAREN* RBRACE;
