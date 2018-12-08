@@ -42,6 +42,9 @@ THIS        : "this"
 NEW         : "new"
 LENGTH      : "length"
 
+// whitespace
+WS: [ \r\t\n]+ -> skip;
+
 
 
 
