@@ -1,4 +1,4 @@
-grammer Expression;
+grammar Expression;
 
 expression	:	expression ( AND | LT | ADD | SUB | MUL ) expression
             |	expression LBRACK expression RBRACK

@@ -1,4 +1,4 @@
-grammer Statement;
+grammar Statement;
 
 statement:	    LBRACE ( statement )* RBRACE
             |	IF LPAREN expression RPAREN statement ELSE statement

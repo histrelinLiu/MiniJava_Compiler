@@ -1,4 +1,4 @@
-lexer grammer Reserved;
+lexer grammar Reserved;
 
 // 字符
 LPAREN: '(';
