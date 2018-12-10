@@ -50,6 +50,7 @@ public class MiniJavaTest {
             ParseTree parseTree = parser.goal();
             MyMiniJavaVisitor visitor = new MyMiniJavaVisitor();
             visitor.visit(parseTree);
+            System.out.println();
         }       
         
     }
