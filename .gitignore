@@ -4,3 +4,4 @@
 *.sqlite
 *.tokens
 *.interp
+*.txt
