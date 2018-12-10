@@ -54,7 +54,6 @@ class BBS{
     public int Print(){
 	int j ;
 	j = 0 ;
-	System.out.println(size);
 	while (j < (size)) {
 	    System.out.println(number[j]);
 	    j = j + 1 ;
@@ -63,7 +62,6 @@ class BBS{
     }
     
     public int Init(int sz){
-	System.out.println(sz);
 	size = sz ;
 	number = new int[sz] ;
 	
@@ -77,17 +75,6 @@ class BBS{
 	number[7] = 9  ; 
 	number[8] = 19 ; 
 	number[9] = 5  ;
-	System.out.println(number[0]);
-	System.out.println(number[1]);
-	System.out.println(number[2]);
-	System.out.println(number[3]);
-	System.out.println(number[4]);
-	System.out.println(number[5]);
-	System.out.println(number[6]);
-	System.out.println(number[7]);
-	System.out.println(number[8]);
-	System.out.println(number[9]);
-	System.out.println(number);
 	return 0 ;	
     }
 

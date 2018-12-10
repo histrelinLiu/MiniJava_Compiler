@@ -1,1 +1,1 @@
-java org.antlr.v4.gui.TestRig MiniJava goal -gui -tree ../SampleMiniJavaPrograms/bubblesort.java
+java org.antlr.v4.gui.TestRig MiniJava goal -gui -tree ../SampleMiniJavaPrograms/binarysearch.java

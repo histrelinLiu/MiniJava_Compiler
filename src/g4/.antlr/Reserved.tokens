@@ -34,6 +34,7 @@ FALSE=33
 THIS=34
 NEW=35
 WS=36
+SL_COMMENT=37
 '('=1
 ')'=2
 '{'=3

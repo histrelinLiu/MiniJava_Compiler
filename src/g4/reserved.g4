@@ -44,6 +44,10 @@ NEW         : 'new';
 // whitespace
 WS: [ \r\t\n]+ -> skip;
 
+SL_COMMENT
+    : '//' .*? '\n' -> skip
+    ;
+
 
 
 

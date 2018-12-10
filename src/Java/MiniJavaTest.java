@@ -1,3 +1,8 @@
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.PrintStream;
+
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -8,108 +13,44 @@ import org.antlr.v4.runtime.tree.ParseTreeWalker;
 public class MiniJavaTest {
 
     public static void main(String[] args) {
-        CharStream input = CharStreams.fromString(
-        "class BubbleSort{"+
-        "    public static void main(String[] a){"+
-        "	System.out.println(new BBS().Start(10));"+
-        "    }"+
-        "}"+
-        ""+
-        "class BBS{"+
-        "    int[] number ;"+
-        "    int size ;"+
-        ""+
-        "   public int Start(int sz){"+
-        "	int aux01 ;"+
-        "	System.out.println(sz);"+
-        "	aux01 = this.Init(sz);"+
-        "	aux01 = this.Print();"+
-        "	System.out.println(99999);"+
-        "	aux01 = this.Sort();"+
-        "	aux01 = this.Print();"+
-        "	return 0 ;"+
-        "    }"+
-        ""+
-        " "+
-        "    public int Sort(){"+
-        "	int nt ;"+
-        "	int i ;"+
-        "	int aux02 ;"+
-        "	int aux04 ;"+
-        "	int aux05 ;"+
-        "	int aux06 ;"+
-        "	int aux07 ;"+
-        "	int j ;"+
-        "	int t ;"+
-        "	i = size - 1 ;"+
-        "	aux02 = 0 - 1 ;"+
-        "	while (aux02 < i) {"+
-        "	    j = 1 ;"+
-        "	    while (j < (i+1)){"+
-        "		aux07 = j - 1 ;"+
-        "		aux04 = number[aux07] ;"+
-        "		aux05 = number[j] ;"+
-        "		if (aux05 < aux04) {"+
-        "		    aux06 = j - 1 ;"+
-        "		    t = number[aux06] ;"+
-        "		    number[aux06] = number[j] ;"+
-        "		    number[j] = t;"+
-        "		}"+
-        "		else nt = 0 ;"+
-        "		j = j + 1 ;"+
-        "	    }"+
-        "	    i = i - 1 ;"+
-        "	}"+
-        "	return 0 ;"+
-        "    }"+
-        ""+
-        "    public int Print(){"+
-        "	int j ;"+
-        "	j = 0 ;"+
-        "	System.out.println(size);"+
-        "	while (j < (size)) {"+
-        "	    System.out.println(number[j]);"+
-        "	    j = j + 1 ;"+
-        "	}"+
-        "	return 0 ;"+
-        "    }"+
-        "    "+
-        "    public int Init(int sz){"+
-        "	size = sz ;"+
-        "	number = new int[sz] ;"+
-        "	"+
-        "	number[0] = 20 ;"+
-        "	number[1] = 7  ; "+
-        "	number[2] = 12 ;"+
-        "	number[3] = 18 ;"+
-        "	number[4] = 2  ; "+
-        "	number[5] = 11 ;"+
-        "	number[6] = 6  ; "+
-        "	number[7] = 9  ; "+
-        "	number[8] = 19 ; "+
-        "	number[9] = 5  ;"+
-        "	System.out.println(number[0]);"+
-        "	System.out.println(number[1]);"+
-        "	System.out.println(number[2]);"+
-        "	System.out.println(number[3]);"+
-        "	System.out.println(number[4]);"+
-        "	System.out.println(number[5]);"+
-        "	System.out.println(number[6]);"+
-        "	System.out.println(number[7]);"+
-        "	System.out.println(number[8]);"+
-        "	System.out.println(number[9]);"+
-        "	System.out.println(number);"+
-        "	return 0 ;	"+
-        "    }"+
-        ""+
-        "}");
-        MiniJavaLexer lexer = new MiniJavaLexer(input);
-
-        CommonTokenStream tokenStream = new CommonTokenStream(lexer);
-        MiniJavaParser parser = new MiniJavaParser(tokenStream);
-        ParseTree parseTree = parser.goal();
-        MiniJavaBaseVisitor visitor = new MiniJavaBaseVisitor();
-        visitor.visit(parseTree);
+        try {            
+            File errFile = new File("./err.txt");
+            System.setErr(new PrintStream(errFile));
+        } catch (Exception e) {
+        }
+        String[] testFiles = {
+            "binarysearch.java",
+            "binarytree.java",
+            "bubblesort.java",
+            "factorial.java",
+            "linearsearch.java",
+            "linkedlist.java",
+            "quicksort.java",
+            "treevisitor.java"
+        };
+        byte[] bs = new byte[1];
+        for (String JavaFile : testFiles) {
+            System.out.println("Test " + JavaFile + ":");
+            try {          
+                File file = new File("../SampleMiniJavaPrograms/" + JavaFile);
+                InputStream inputStream = new FileInputStream(file);        
+                bs = new byte[(int)file.length()];       
+                inputStream.read(bs);
+                inputStream.close();
+            } catch (Exception e) {
+                
+            }   
+            
+            CharStream input = CharStreams.fromString(new String(bs));
+            
+            MiniJavaLexer lexer = new MiniJavaLexer(input);
+    
+            CommonTokenStream tokenStream = new CommonTokenStream(lexer);
+            MiniJavaParser parser = new MiniJavaParser(tokenStream);
+            ParseTree parseTree = parser.goal();
+            MyMiniJavaVisitor visitor = new MyMiniJavaVisitor();
+            visitor.visit(parseTree);
+        }       
         
     }
 

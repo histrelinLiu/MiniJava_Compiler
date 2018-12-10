@@ -173,6 +173,13 @@ public interface MiniJavaVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitLlength(MiniJavaParser.LlengthContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code Lsubinteger}
+	 * labeled alternative in {@link MiniJavaParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitLsubinteger(MiniJavaParser.LsubintegerContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code Lidentifier}
 	 * labeled alternative in {@link MiniJavaParser#expression}.
 	 * @param ctx the parse tree

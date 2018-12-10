@@ -4,6 +4,7 @@ expression	:	expression op=( AND | LT | ADD | SUB | MUL ) expression            
             |	expression LBRACK expression RBRACK                                             #Larray
             |	expression DOT LENGTH                                                           #Llength
             |	expression DOT identifier LPAREN ( expression ( COMMA expression )* )? RPAREN   #Lmethod
+            |   SUB Integer                                                                     #Lsubinteger
             |	Integer                                                                         #Linteger
             |	TRUE                                                                            #Ltrue
             |	FALSE                                                                           #Lfalse
