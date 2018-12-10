@@ -1,0 +1,6 @@
+*.json
+*.class
+*.suo
+*.sqlite
+*.tokens
+*.interp
