@@ -1,5 +1,6 @@
 // Generated from ./g4/MiniJava.g4 by ANTLR 4.7.1
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 import java.lang.System;
 
@@ -21,7 +22,7 @@ public class MiniJavaBaseVisitor<T> extends AbstractParseTreeVisitor<T> implemen
 		else if (t instanceof MiniJavaParser.LintarrayContext) return int[].class;
 		else if (t instanceof MiniJavaParser.LboolContext) return boolean.class;
 		else if (t instanceof MiniJavaParser.LclassContext) return myClasses.getClass();
-		System.err.println("ERROR: Can't get Type :" + t.toString());
+		System.err.println("ERROR: Can't get Type "+t.toString());
 		return null;
 
 	}
@@ -39,19 +40,23 @@ public class MiniJavaBaseVisitor<T> extends AbstractParseTreeVisitor<T> implemen
 			myType = getType(cxt.type());
 			name = cxt.IDENTIFIER().getText();
 			addr = varsTop++;
+			System.out.println("Create a var : "+cxt.getText());
 		}
 		public MyVar(MiniJavaParser.TypeContext t, MiniJavaParser.IdentifierContext id){
 			myType = getType(t);
-			name = id.toString();
+			name = id.IDENTIFIER().getText();
 			addr = varsTop++;
+			System.out.println("Create a var : "+t.getText()+" "+id.getText());
 		}
 		public MyVar(int length){
 			addr = varsTop;
 			varsTop += length;
+			System.out.println("Create a array");
 		}
 		public MyVar(String id){
 			c = findClass(id);
 			obj = new MyClass(c);
+			System.out.println("Create a var : "+id);
 		}
 	};
 
@@ -59,12 +64,13 @@ public class MiniJavaBaseVisitor<T> extends AbstractParseTreeVisitor<T> implemen
 	private class MyClass{
 		public MyClass extendsClass;
 		public String className;
-		public List<MyMethod> methods;
-		public List<MyVar> vars;
+		public List<MyMethod> methods = new ArrayList<>();
+		public List<MyVar> vars = new ArrayList<>();
 
 		public MyClass(MiniJavaParser.ClassDeclarationContext cxt){
-			className = cxt.identifier(0).toString();
-			if (cxt.identifier().size() == 2) extendsClass = findClass(cxt.identifier(1).toString());
+			System.out.println("Create MyClass : "+cxt.identifier(0).IDENTIFIER().getText());
+			className = cxt.identifier(0).IDENTIFIER().getText();
+			if (cxt.identifier().size() == 2) extendsClass = findClass(cxt.identifier(1).IDENTIFIER().getText());
 
 			for (MiniJavaParser.MethodDeclarationContext var : cxt.methodDeclaration()) {
 				methods.add(new MyMethod(var, this));
@@ -82,17 +88,20 @@ public class MiniJavaBaseVisitor<T> extends AbstractParseTreeVisitor<T> implemen
 		public MyVar obj;
 		public Type returnType;
 		public String methodName;
-		public List<MyVar> vars;
-		public List<MiniJavaParser.StatementContext> statement;
+		public List<MyVar> vars = new ArrayList<>();
+		public List<MiniJavaParser.StatementContext> statement = new ArrayList<>();
 		public MiniJavaParser.ExpressionContext returnValue;
 
 		public MyMethod(MiniJavaParser.MethodDeclarationContext cxt, MyClass c){
+			System.out.println("Create a method : " + cxt.identifier(0).IDENTIFIER().getText());
 			returnType = getType(cxt.type(0));
-			methodName = cxt.identifier(0).toString();
+			methodName = cxt.identifier(0).IDENTIFIER().getText();
 			
 			// param
-			for(int i = 1; i<cxt.type().size(); i++)
+			for(int i = 1; i<cxt.type().size(); i++){
+
 				vars.add(new MyVar(cxt.type(i), cxt.identifier(i)));
+			}
 			// var
 			for (MiniJavaParser.VarDeclarationContext var : cxt.varDeclaration()) 
 				vars.add(new MyVar(var));
@@ -112,8 +121,8 @@ public class MiniJavaBaseVisitor<T> extends AbstractParseTreeVisitor<T> implemen
 
 	public int[] vars = new int[10000];
 	public int varsTop = 0;
-	public List<MyClass> myClasses;
-	public List<MyClass> myObjects;
+	public List<MyClass> myClasses = new ArrayList<>();
+	public List<MyClass> myObjects = new ArrayList<>();
 
 	public MyVar findvar(MyVar o, MyMethod m, String varname){
 		if (m!=null)
@@ -148,6 +157,7 @@ public class MiniJavaBaseVisitor<T> extends AbstractParseTreeVisitor<T> implemen
 		return null;
 	}
 	public MyVar executeExpression(MyVar obj, MyMethod m, MiniJavaParser.ExpressionContext s){		
+		System.out.println("Execute Statement " + s.getText());
 		MyVar ret = new MyVar();
 		
 		if (s instanceof MiniJavaParser.LoperatorContext) {
@@ -171,7 +181,7 @@ public class MiniJavaBaseVisitor<T> extends AbstractParseTreeVisitor<T> implemen
 		}
 		else if (s instanceof MiniJavaParser.LmethodContext) {
 			MyVar object = executeExpression(obj, m, ((MiniJavaParser.LmethodContext)s).expression(0));
-			MyMethod method = findMethod(object.c, ((MiniJavaParser.LmethodContext)s).identifier().toString());
+			MyMethod method = findMethod(object.c, ((MiniJavaParser.LmethodContext)s).identifier().IDENTIFIER().getText());
 			MyMethod method1 = method;
 			method1.obj = object;
 			for(int i = 1; i< ((MiniJavaParser.LmethodContext)s).expression().size(); i++){
@@ -180,7 +190,7 @@ public class MiniJavaBaseVisitor<T> extends AbstractParseTreeVisitor<T> implemen
 			ret = method1.call();
 		}
 		else if (s instanceof MiniJavaParser.LintegerContext) {
-			vars[ret.addr] = Integer.parseInt(((MiniJavaParser.LintegerContext)s).toString());
+			vars[ret.addr] = Integer.parseInt(((MiniJavaParser.LintegerContext)s).Integer().getText());
 			System.out.print("int value ");
 			System.out.println(vars[ret.addr]);
 		}
@@ -191,14 +201,14 @@ public class MiniJavaBaseVisitor<T> extends AbstractParseTreeVisitor<T> implemen
 			vars[ret.addr] = 0;
 		}
 		else if (s instanceof MiniJavaParser.LidentifierContext) {
-			ret = findvar(obj, m, ((MiniJavaParser.LidentifierContext)s).identifier().toString());
+			ret = findvar(obj, m, ((MiniJavaParser.LidentifierContext)s).identifier().IDENTIFIER().getText());
 		}
 		else if (s instanceof MiniJavaParser.LnewarrayContext) {
 			MyVar v1 = executeExpression(obj, m, ((MiniJavaParser.LnewarrayContext)s).expression());
 			ret = new MyVar(vars[v1.addr]);
 		}
 		else if (s instanceof MiniJavaParser.LnewobjectContext) {
-			ret = new MyVar((String)(((MiniJavaParser.LnewobjectContext)s).identifier().toString()));
+			ret = new MyVar((String)(((MiniJavaParser.LnewobjectContext)s).identifier().IDENTIFIER().getText()));
 		}
 		else if (s instanceof MiniJavaParser.LbangContext) {
 			MyVar v1 = executeExpression(obj, m, ((MiniJavaParser.LbangContext)s).expression());
@@ -234,11 +244,11 @@ public class MiniJavaBaseVisitor<T> extends AbstractParseTreeVisitor<T> implemen
 			System.out.println(vars[executeExpression(obj, m, ((MiniJavaParser.LprintContext)s).expression()).addr]);
 		}
 		else if (s instanceof MiniJavaParser.LassignContext) {
-			MyVar v = findvar(obj, m, ((MiniJavaParser.LassignContext)s).identifier().toString());
+			MyVar v = findvar(obj, m, ((MiniJavaParser.LassignContext)s).identifier().IDENTIFIER().getText());
 			vars[v.addr] = vars[executeExpression(obj, m, ((MiniJavaParser.LassignContext)s).expression()).addr];
 		}
 		else if (s instanceof MiniJavaParser.LarrayassignContext) {
-			MyVar v = findvar(obj, m, ((MiniJavaParser.LarrayassignContext)s).identifier().toString());
+			MyVar v = findvar(obj, m, ((MiniJavaParser.LarrayassignContext)s).identifier().IDENTIFIER().getText());
 			vars[v.addr + vars[executeExpression(obj, m, ((MiniJavaParser.LarrayassignContext)s).expression(0)).addr]]
 				  = vars[executeExpression(obj, m, ((MiniJavaParser.LarrayassignContext)s).expression(1)).addr];
 		}
@@ -249,9 +259,6 @@ public class MiniJavaBaseVisitor<T> extends AbstractParseTreeVisitor<T> implemen
 		return 0;
 	}
 
-	public MiniJavaParser.GoalContext root;
-	public MyClass mainclass;
-	public List<MyVar> localVars; 
 	/**
 	 * {@inheritDoc}
 	 *
