@@ -1,1 +1,1 @@
-java -jar ../antlr-4.7.1-complete.jar ./g4/MiniJava.g4 -o ./Java
+java -jar ../antlr-4.7.1-complete.jar ./g4/MiniJava.g4 -o ./Java -no-listener -visitor

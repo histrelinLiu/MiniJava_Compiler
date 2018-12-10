@@ -3,9 +3,7 @@ class BubbleSort{
 	System.out.println(new BBS().Start(10));
     }
 }
-
 class BBS{
-    
     int[] number ;
     int size ;
 
