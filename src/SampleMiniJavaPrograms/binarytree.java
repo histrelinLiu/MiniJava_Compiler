@@ -128,8 +128,12 @@ class Tree{
 	int key_aux ;
 	Tree current_node ;
 
+	System.out.println(key);
+	System.out.println(this.GetKey());
 	new_node = new Tree();
-	ntb = new_node.Init(v_key) ;
+	ntb = new_node.Init(v_key) ;	
+	System.out.println(key);
+	System.out.println(this.GetKey());
 	current_node = this ;
 	cont = true ;
 	while (cont){

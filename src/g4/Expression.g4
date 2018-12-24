@@ -1,16 +1,17 @@
 grammar Expression;
 
-expression	:	expression ( AND | LT | ADD | SUB | MUL ) expression
-            |	expression LBRACK expression RBRACK
-            |	expression DOT LENGTH
-            |	expression DOT identifier LPAREN ( expression ( COMMA expression )* )? RPAREN
-            |	Integer
-            |	TRUE
-            |	FALSE
-            |	identifier
-            |	THIS
-            |	NEW INT LBRACK expression RBRACK
-            |	NEW identifier LPAREN RPAREN
-            |	BANG expression
-            |	LPAREN expression RPAREN;
-            
+expression	:	expression op=( AND | LT | ADD | SUB | MUL ) expression                         #Loperator
+            |	expression LBRACK expression RBRACK                                             #Larray
+            |	expression DOT LENGTH                                                           #Llength
+            |	expression DOT identifier LPAREN ( expression ( COMMA expression )* )? RPAREN   #Lmethod
+            |   SUB Integer                                                                     #Lsubinteger
+            |	Integer                                                                         #Linteger
+            |	TRUE                                                                            #Ltrue
+            |	FALSE                                                                           #Lfalse
+            |	identifier                                                                      #Lidentifier
+            |	THIS                                                                            #Lthis
+            |	NEW INT LBRACK expression RBRACK                                                #Lnewarray
+            |	NEW identifier LPAREN RPAREN                                                    #Lnewobject
+            |	BANG expression                                                                 #Lbang
+            |	LPAREN expression RPAREN                                                        #Lsubexpression
+            ;

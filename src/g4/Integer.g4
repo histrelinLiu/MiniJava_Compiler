@@ -1,4 +1,4 @@
 lexer grammar Integer;
 
-Integer : SUB? DIGIT+;
+Integer : DIGIT+;
 integer : Integer;

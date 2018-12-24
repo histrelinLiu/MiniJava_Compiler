@@ -40,10 +40,13 @@ TRUE        : 'true';
 FALSE       : 'false';
 THIS        : 'this';
 NEW         : 'new';
-LENGTH      : 'length';
 
 // whitespace
 WS: [ \r\t\n]+ -> skip;
+
+SL_COMMENT
+    : '//' .*? '\n' -> skip
+    ;
 
 
 
