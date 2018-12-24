@@ -1,4 +1,4 @@
-// Generated from c:\Users\15307\Desktop\MiniJava_Compiler\src\g4\Reserved.g4 by ANTLR 4.7.1
+// Generated from c:\Users\15307\Desktop\MiniJava_Compiler\src\g4/Reserved.g4 by ANTLR 4.7.1
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.Token;
