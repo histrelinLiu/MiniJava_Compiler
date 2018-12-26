@@ -8,6 +8,7 @@ import java.lang.System;
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
 
 
+
 /**
  * This class provides an empty implementation of {@link MiniJavaVisitor},
  * which can be extended to create a visitor which only needs to handle a subset
@@ -83,6 +84,7 @@ public class MyMiniJavaVisitor<T> extends AbstractParseTreeVisitor<T> implements
         public int id = objId++;
 		public MyClass fa = this;
 		public MyClass extendsClass;
+		public MyVar extendsobj;
 		public String className;
 		public List<MyMethod> methods = new ArrayList<>();
 		public List<MyVar> vars = new ArrayList<>();
@@ -90,7 +92,11 @@ public class MyMiniJavaVisitor<T> extends AbstractParseTreeVisitor<T> implements
 		public MyClass(MiniJavaParser.ClassDeclarationContext cxt){
 			System.err.println("Create MyClass : "+cxt.identifier(0).IDENTIFIER().getText());
 			className = cxt.identifier(0).IDENTIFIER().getText();
-			if (cxt.identifier().size() == 2) extendsClass = findClass(cxt.identifier(1).IDENTIFIER().getText());
+			if (cxt.identifier().size() == 2) 
+			{	
+				extendsClass = findClass(cxt.identifier(1).IDENTIFIER().getText());
+				System.err.println("extends " + extendsClass.className);
+			}
 			for (MiniJavaParser.VarDeclarationContext var : cxt.varDeclaration()) {
 				vars.add(new MyVar(var));
             }
@@ -108,6 +114,8 @@ public class MyMiniJavaVisitor<T> extends AbstractParseTreeVisitor<T> implements
 			fa = c;
 			className = c.className;
 			extendsClass = c.extendsClass;
+			if (c.extendsClass != null)
+				extendsobj = new MyVar(extendsClass.className);
 		}
 	};
 
@@ -189,6 +197,10 @@ public class MyMiniJavaVisitor<T> extends AbstractParseTreeVisitor<T> implements
 		if (o!=null)
 		for (MyVar var : o.obj.vars) {
 			if (var.name.equals(varname)) return var;
+		}
+		if (o != null && o.obj.extendsobj != null)
+		{
+			return findvar(o.obj.extendsobj, null, varname);
 		}
 		System.err.println("ERROR: Can't find variable :" + varname);
 		System.exit(-1);
