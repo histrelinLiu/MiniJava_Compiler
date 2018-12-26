@@ -1,1 +1,1 @@
-java MiniJavaTest
+@java MiniJavaTest > out.txt

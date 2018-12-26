@@ -19,20 +19,20 @@ public class MiniJavaTest {
         } catch (Exception e) {
         }
         String[] testFiles = {
-            "binarysearch.java",
-            "binarytree.java",
-            "bubblesort.java",
-            "factorial.java",
-            "linearsearch.java",
-            "linkedlist.java",
-            "quicksort.java",
-            "treevisitor.java"
+            "binarysearch",
+            "binarytree",
+            "bubblesort",
+            "factorial",
+            "linearsearch",
+            "linkedlist",
+            "quicksort",
+            "treevisitor"
         };
         byte[] bs = new byte[1];
         for (String JavaFile : testFiles) {
-            System.out.println("Test " + JavaFile + ":");
+            //System.out.println(JavaFile);
             try {          
-                File file = new File("../SampleMiniJavaPrograms/" + JavaFile);
+                File file = new File("../SampleMiniJavaPrograms/" + JavaFile + "/" + JavaFile +".java");
                 InputStream inputStream = new FileInputStream(file);        
                 bs = new byte[(int)file.length()];       
                 inputStream.read(bs);
@@ -50,7 +50,6 @@ public class MiniJavaTest {
             ParseTree parseTree = parser.goal();
             MyMiniJavaVisitor visitor = new MyMiniJavaVisitor();
             visitor.visit(parseTree);
-            System.out.println();
         }       
         
     }
