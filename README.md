@@ -6,7 +6,7 @@ FDU CompilePJ Team : 刘瑞林 + 陈啸天
 ##### 共同完成的部分 :
 工具选择/架构设计
 ##### 刘瑞林:
-
+```
 Statement.g4
 Expression.g4
 Identifier.g4
@@ -16,25 +16,26 @@ MyMiniJavaVisitor.java # MiniJava解释器
 MiniJavaTest.java # 调用解释器运行所有Sample java
 .bat脚本
 调试
-
+```
 ##### 陈啸天
+```
 Goal.g4	
 MainClass.g4	
 ClassDeclaration.g4
 VarDeclaration.g4	
 MethodDeclaration.g4
 Type.g4
-
+```
 ### 平台
-
+```
 windows 10
 ANTLR4
 JAVA
 
 依赖: java环境
-并且确保antlr-4.7.1-complete.jar在PATH路径中
+并且确保antlr-4.7.1-complete.jar在CLASSPATH路径中
 或者在命令行中调用java时,手动添加jar包目录
-
+```
 ### 运行方式
 ```
 /src/antlr.bat                  #根据.g4文件生成java文件
