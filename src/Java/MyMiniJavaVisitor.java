@@ -43,24 +43,24 @@ public class MyMiniJavaVisitor<T> extends AbstractParseTreeVisitor<T> implements
             MiniJavaParser.TypeContext t = cxt.type();
             if (t.getText().equals("int[]") || t.getText().equals("int") || t.getText().equals("boolean"))
                 addr = varsTop++;
-			System.err.println("Create a var : "+cxt.type().getText()+" "+cxt.IDENTIFIER().getText());
+			//System.err.println("Create a var : "+cxt.type().getText()+" "+cxt.IDENTIFIER().getText());
 		}
 		public MyVar(MiniJavaParser.TypeContext t, MiniJavaParser.IdentifierContext id){
             if (t.getText().equals("int[]") || t.getText().equals("int") || t.getText().equals("boolean"))
                 addr = varsTop++;
 			name = id.IDENTIFIER().getText();
-			System.err.println("Create a var : "+t.getText()+" "+id.getText());
+			//System.err.println("Create a var : "+t.getText()+" "+id.getText());
 		}
 		public MyVar(int length1){
 			length = length1;
 			addr = varsTop++;			
 			varsTop += length1;
 			VARS[addr] = addr + 1;
-			System.err.println("Create a array length = " + String.valueOf(length));
+			//System.err.println("Create a array length = " + String.valueOf(length));
 		}
 		public MyVar(String id){
             obj = new MyClass(findClass(id));
-			System.err.println("Create a var : "+id);
+			//System.err.println("Create a var : "+id);
 		}
 		public MyVar(MyVar var){
 			name = var.name;
@@ -90,12 +90,12 @@ public class MyMiniJavaVisitor<T> extends AbstractParseTreeVisitor<T> implements
 		public List<MyVar> vars = new ArrayList<>();
         public MyClass(){className = "NULL";}
 		public MyClass(MiniJavaParser.ClassDeclarationContext cxt){
-			System.err.println("Create MyClass : "+cxt.identifier(0).IDENTIFIER().getText());
+			//System.err.println("Create MyClass : "+cxt.identifier(0).IDENTIFIER().getText());
 			className = cxt.identifier(0).IDENTIFIER().getText();
 			if (cxt.identifier().size() == 2) 
 			{	
 				extendsClass = findClass(cxt.identifier(1).IDENTIFIER().getText());
-				System.err.println("extends " + extendsClass.className);
+				//System.err.println("extends " + extendsClass.className);
 			}
 			for (MiniJavaParser.VarDeclarationContext var : cxt.varDeclaration()) {
 				vars.add(new MyVar(var));
@@ -130,7 +130,7 @@ public class MyMiniJavaVisitor<T> extends AbstractParseTreeVisitor<T> implements
 		public int paramNum;
 
 		public MyMethod(MiniJavaParser.MethodDeclarationContext cxt, MyClass c){
-			System.err.println("Create a method : " + cxt.identifier(0).IDENTIFIER().getText());
+			//System.err.println("Create a method : " + cxt.identifier(0).IDENTIFIER().getText());
 			returnType = getType(cxt.type(0));
 			methodName = cxt.identifier(0).IDENTIFIER().getText();
 			
@@ -149,7 +149,7 @@ public class MyMiniJavaVisitor<T> extends AbstractParseTreeVisitor<T> implements
 
 		}
 		public MyMethod(MyMethod m, MyVar o){
-			System.err.println("Instance a method : " + m.methodName);
+			//System.err.println("Instance a method : " + m.methodName);
 			returnType = m.returnType;
 			methodName = m.methodName;			
 			obj = o;
@@ -162,20 +162,20 @@ public class MyMiniJavaVisitor<T> extends AbstractParseTreeVisitor<T> implements
 		}
 		
 		public MyVar call(){
-            System.err.print(methodName + " params out :");
+            //System.err.print(methodName + " params out :");
             for (MyVar var : vars) {
                 if (var.addr!=-1) {
-                    System.err.print(var.name + "=" + VARS[var.addr] + "; ");
+                    //System.err.print(var.name + "=" + VARS[var.addr] + "; ");
                 }
                 else {
-                    System.err.print(var.name + "=" + ((var.obj!=null)?String.valueOf(var.obj.id):"null") + "; ");
+                    //System.err.print(var.name + "=" + ((var.obj!=null)?String.valueOf(var.obj.id):"null") + "; ");
                 }
             }
-		    System.err.println(" ");
+		    //System.err.println(" ");
 			for (MiniJavaParser.StatementContext var : statement) {
                 
                 if (this.obj==null && this.obj.addr==-1) {
-                    System.err.println("ADDR ERROR");
+                    System.err.println("ADDR ERROR: "+this.obj.name);
                 }
 
 				executeStatement(this.obj, this, var);
@@ -226,7 +226,7 @@ public class MyMiniJavaVisitor<T> extends AbstractParseTreeVisitor<T> implements
 		return null;
 	}
 	public MyVar executeExpression(MyVar obj, MyMethod m, MiniJavaParser.ExpressionContext s){
-	    System.err.println("Execute Expression " + s.getText());
+	    //System.err.println("Execute Expression " + s.getText());
 		MyVar ret = new MyVar();
 		
 		if (s instanceof MiniJavaParser.LoperatorContext) {
@@ -241,13 +241,15 @@ public class MyMiniJavaVisitor<T> extends AbstractParseTreeVisitor<T> implements
 		else if (s instanceof MiniJavaParser.LarrayContext) {
 			MyVar v1 = executeExpression(obj, m, ((MiniJavaParser.LarrayContext)s).expression(0));
 			MyVar v2 = executeExpression(obj, m, ((MiniJavaParser.LarrayContext)s).expression(1));
+			if (VARS[v2.addr]<0 || VARS[v2.addr]>v1.length)
+				System.err.println("array addr error: " + v1.name + "[" + String.valueOf(VARS[v2.addr]) + "]");
 			ret.addr = VARS[v1.addr] + VARS[v2.addr];
 		}
 		else if (s instanceof MiniJavaParser.LlengthContext) {
             MyVar v1 = executeExpression(obj, m, ((MiniJavaParser.LlengthContext)s).expression());
             /*if (v1.name.equals("number"))
             {
-                System.err.println("number.length = " + String.valueOf(v1.length));
+                //System.err.println("number.length = " + String.valueOf(v1.length));
                 if (v1.length == 1) System.exit(-1);
             }*/
 			VARS[ret.addr] = v1.length;
@@ -298,7 +300,7 @@ public class MyMiniJavaVisitor<T> extends AbstractParseTreeVisitor<T> implements
 		else if (s instanceof MiniJavaParser.LthisContext) {
 			ret = obj;
 		}
-		System.err.println("Execute Expression " + s.getText() + ", result = " + ((ret.addr != -1)?(String.valueOf(VARS[ret.addr])):String.valueOf(ret.obj.id)));
+		//System.err.println("Execute Expression " + s.getText() + ", result = " + ((ret.addr != -1)?(String.valueOf(VARS[ret.addr])):String.valueOf(ret.obj.id)));
 		return ret;
 	}
 	public int executeStatement(MyVar obj, MyMethod m, MiniJavaParser.StatementContext s){
@@ -309,18 +311,18 @@ public class MyMiniJavaVisitor<T> extends AbstractParseTreeVisitor<T> implements
         */
 		/*if (obj!=null)
 		{
-			System.err.print(obj.obj.className + " vars out ");
+			//System.err.print(obj.obj.className + " vars out ");
 			for (MyVar var : obj.obj.vars) {
 				if (var.addr!=-1) {
-                    System.err.print(var.name + "=" + VARS[var.addr] + "; ");
+                    //System.err.print(var.name + "=" + VARS[var.addr] + "; ");
                 }
 				else {
-                    System.err.print(var.name + "=" + ((var.obj!=null)?String.valueOf(var.obj.id):"null") + "; ");
+                    //System.err.print(var.name + "=" + ((var.obj!=null)?String.valueOf(var.obj.id):"null") + "; ");
                 }
 			}
 		}
-		System.err.println(" ");*/
-		System.err.println("Execute Statement \"" + s.getText() + "\", obj id = " + String.valueOf((obj!=null)?(obj.obj.id):(-1)));
+		//System.err.println(" ");*/
+		//System.err.println("Execute Statement \"" + s.getText() + "\", obj id = " + String.valueOf((obj!=null)?(obj.obj.id):(-1)));
 		if (s instanceof MiniJavaParser.LsubstatementContext) {
 			for (MiniJavaParser.StatementContext var : ((MiniJavaParser.LsubstatementContext)s).statement()) {
 				executeStatement(obj, m, var);
@@ -357,7 +359,7 @@ public class MyMiniJavaVisitor<T> extends AbstractParseTreeVisitor<T> implements
 				  = VARS[executeExpression(obj, m, ((MiniJavaParser.LarrayassignContext)s).expression(1)).addr];
 		}
 		else {
-			System.err.println("ERROR: Statement type error, none statement be executed."); 
+			//System.err.println("ERROR: Statement type error, none statement be executed."); 
 			return 1;
 		}
 		return 0;

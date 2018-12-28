@@ -15,7 +15,7 @@ public class MiniJavaTest {
     public static void main(String[] args) {
         try {            
             File errFile = new File("./err.txt");
-            System.setErr(new PrintStream(errFile));
+            //System.setErr(new PrintStream(errFile));
         } catch (Exception e) {
         }
         String[] testFiles = {
@@ -28,9 +28,9 @@ public class MiniJavaTest {
             "quicksort",
             "treevisitor"
         };
+        if (args.length>0) testFiles = args;
         byte[] bs = new byte[1];
         for (String JavaFile : testFiles) {
-            //System.out.println(JavaFile);
             try {          
                 File file = new File("../SampleMiniJavaPrograms/" + JavaFile + "/" + JavaFile +".java");
                 InputStream inputStream = new FileInputStream(file);        
